@@ -15,7 +15,7 @@ import com.jlee.mobile.camviewer.presenters.FullscreenPresenter;
 import com.jlee.mobile.camviewer.presenters.FullscreenView;
 import com.jlee.mobile.camviewer.ui.fragment.Factory;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
 
-    @Bind(R.id.view_camera)
+    @BindView(R.id.view_camera)
     View cameraView;
-    @Bind(R.id.fullscreen_content_controls)
+    @BindView(R.id.fullscreen_content_controls)
     View mControlsView;
 
     private boolean mVisible;

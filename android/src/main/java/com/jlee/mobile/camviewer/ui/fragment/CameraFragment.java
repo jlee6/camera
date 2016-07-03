@@ -15,8 +15,9 @@ import com.jlee.mobile.camviewer.modules.Recorder;
 import com.jlee.mobile.camviewer.ui.view.AutoFitView;
 import com.jlee.mobile.camviewer.util.SizeHelper;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class CameraFragment extends Fragment {
     private static final int BACK_FACING_CAMERA = 0;
@@ -26,7 +27,9 @@ public class CameraFragment extends Fragment {
     private Camera camera;
     private Recorder recorder;
 
-    @Bind(R.id.camera_preview)
+    private Unbinder unbinder;
+
+    @BindView(R.id.camera_preview)
     AutoFitView camView;
 
     public CameraFragment() {
@@ -37,7 +40,7 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         return view;
     }
@@ -92,5 +95,10 @@ public class CameraFragment extends Fragment {
         super.onPause();
 
         camera.closeCamera();
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
     }
 }
