@@ -1,4 +1,4 @@
-package com.jlee.mobile.camviewer.ui.view;
+package com.jlee.mobile.actioncamera.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

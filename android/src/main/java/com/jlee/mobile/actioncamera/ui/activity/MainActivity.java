@@ -1,4 +1,4 @@
-package com.jlee.mobile.camviewer.ui.activity;
+package com.jlee.mobile.actioncamera.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -10,13 +10,13 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.jlee.mobile.camviewer.R;
-import com.jlee.mobile.camviewer.presenters.FullscreenPresenter;
-import com.jlee.mobile.camviewer.presenters.FullscreenView;
-import com.jlee.mobile.camviewer.ui.fragment.Factory;
+import com.jlee.mobile.actioncamera.R;
+import com.jlee.mobile.actioncamera.presenters.FullscreenPresenter;
+import com.jlee.mobile.actioncamera.ui.fragment.Factory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnTouch;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -41,14 +41,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
 
-    @BindView(R.id.view_camera)
-    View cameraView;
     @BindView(R.id.fullscreen_content_controls)
     View mControlsView;
 
-    private boolean mVisible;
-
-    private FullscreenPresenter fullscreenPresenter;
+    FullscreenPresenter.FullScreen cameraFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,25 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        fullscreenPresenter = new FullscreenView(this, mControlsView);
-        fullscreenPresenter.show();
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-
-        Fragment viewer = Factory.createFragment(Factory.CAMERA_FRAGMENT);
-        // Set up the user interaction to manually show or hide the system UI.
-        cameraView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fullscreenPresenter.toggle();
-            }
-        });
+        cameraFragment = (FullscreenPresenter.FullScreen) Factory.createFragment(Factory.CAMERA_FRAGMENT);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.view_camera, viewer);
+        transaction.replace(R.id.view_camera, (Fragment) cameraFragment);
         transaction.commit();
     }
 
@@ -95,15 +76,12 @@ public class MainActivity extends AppCompatActivity {
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
      */
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
+    @OnTouch(R.id.dummy_button)
+    private void btnDummyOnTouch(View view, MotionEvent motionEvent) {
+        if (AUTO_HIDE) {
+            delayedHide(AUTO_HIDE_DELAY_MILLIS);
         }
-    };
+    }
 
     private void hide() {
         // Hide UI first
@@ -111,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
-        mVisible = false;
+
+//        mControlsView.setVisibility(View.GONE);
+//        mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
         mHideHandler.removeCallbacks(mShowPart2Runnable);
@@ -128,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
             // at compile-time and do nothing on earlier devices.
-            cameraView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+            cameraFragment.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -137,17 +116,17 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @SuppressLint("InlinedApi")
-    private void show() {
-        // Show the system bar
-        cameraView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        mVisible = true;
-
-        // Schedule a runnable to display UI elements after a delay
-        mHideHandler.removeCallbacks(mHidePart2Runnable);
-        mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
-    }
+//    @SuppressLint("InlinedApi")
+//    private void show() {
+//        // Show the system bar
+//        cameraFragment.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+//        mVisible = true;
+//
+//        // Schedule a runnable to display UI elements after a delay
+//        mHideHandler.removeCallbacks(mHidePart2Runnable);
+//        mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+//    }
 
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
@@ -162,12 +141,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private final Handler mHideHandler = new Handler();
-    private final Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
+    private final Runnable mHideRunnable = () -> hide();
 
     /**
      * Schedules a call to hide() in [delay] milliseconds, canceling any

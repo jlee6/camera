@@ -1,4 +1,4 @@
-package com.jlee.mobile.camviewer.modules;
+package com.jlee.mobile.actioncamera.modules;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,42 +6,48 @@ import android.media.MediaRecorder;
 import android.util.Size;
 import android.widget.Toast;
 
+import com.jlee.mobile.actioncamera.presenters.CameraViewPresenter;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 /**
  * Android media recorder wrapper
  */
 public class Recorder {
     private static final int[] ORIENTATIONS = {90, 0, 270, 180};
-    private Context context;
+    private WeakReference<Context> context;
+    private CameraViewPresenter.CameraView view;
 
     private Size size;
     private MediaRecorder recorder;
 
-    public void initialize(Context context, Size size) {
-        this.context = context;
+    public void initialize(Context context, Size size, CameraViewPresenter.CameraView view) {
+        this.context = new WeakReference<>(context);
+        this.view = view;
         this.size = size;
 
         recorder= new MediaRecorder();
     }
 
     private void setUpMediaRecorder() throws IOException {
-        if (context == null) {
+        Context ctx = context.get();
+        if (ctx == null) {
             return;
         }
 
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setOutputFile(getVideoFile(context).getAbsolutePath());
+        recorder.setOutputFile(getVideoFile(ctx).getAbsolutePath());
         recorder.setVideoEncodingBitRate(10000000);
         recorder.setVideoFrameRate(30);
         recorder.setVideoSize(size.getWidth(), size.getHeight());
         recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
-        int rotation = ((Activity) context).getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = ((Activity) ctx).getWindowManager().getDefaultDisplay().getRotation();
 
         recorder.setOrientationHint(ORIENTATIONS[rotation]);
         recorder.prepare();
@@ -65,12 +71,13 @@ public class Recorder {
         recorder.stop();
         recorder.reset();
 
-//        Activity activity = getActivity();
-//        if (null != activity) {
-//            Toast.makeText(activity, "Video saved: " + getVideoFile(activity),
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//        startPreview();
+        Activity activity = (Activity) context.get();
+        if (null != activity) {
+            Toast.makeText(activity, "Video saved: " + getVideoFile(activity),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        view.startPreview(null);
     }
 
     public void close() {

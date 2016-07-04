@@ -1,10 +1,9 @@
-package com.jlee.mobile.camviewer.util;
+package com.jlee.mobile.actioncamera.util;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentCompat;
-import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
 import android.util.Log;
 

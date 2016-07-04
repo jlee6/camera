@@ -1,4 +1,4 @@
-package com.jlee.mobile.camviewer.ui.fragment;
+package com.jlee.mobile.actioncamera.ui.fragment;
 
 import android.app.Fragment;
 

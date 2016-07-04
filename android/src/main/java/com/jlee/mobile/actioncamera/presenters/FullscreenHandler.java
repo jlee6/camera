@@ -1,18 +1,17 @@
-package com.jlee.mobile.camviewer.presenters;
+package com.jlee.mobile.actioncamera.presenters;
 
 import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
-public class FullscreenView implements FullscreenPresenter {
+public class FullscreenHandler implements FullscreenPresenter {
     private boolean visible;
     private Context context;
 
     // A main activity view
-    private View view;
+    private FullscreenPresenter.FullScreen view;
 
-    public FullscreenView(Context context, View view) {
+    public FullscreenHandler(Context context, FullscreenPresenter.FullScreen view) {
         visible = false;
 
         this.context = context;
@@ -38,8 +37,8 @@ public class FullscreenView implements FullscreenPresenter {
     @Override
     public void show() {
         // Show the system bar
-        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        view.setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         visible = true;
 
 //        // Schedule a runnable to display UI elements after a delay
@@ -55,7 +54,7 @@ public class FullscreenView implements FullscreenPresenter {
         }
 
         if (view != null) {
-            view.setVisibility(View.GONE);
+            view.setVisibility(android.view.View.GONE);
         }
         visible = false;
     }

@@ -1,4 +1,4 @@
-package com.jlee.mobile.camviewer;
+package com.jlee.mobile.actioncamera;
 
 import org.junit.Test;
 

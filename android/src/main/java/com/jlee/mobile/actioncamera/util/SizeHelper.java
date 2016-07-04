@@ -1,4 +1,4 @@
-package com.jlee.mobile.camviewer.util;
+package com.jlee.mobile.actioncamera.util;
 
 import android.app.Activity;
 import android.graphics.Matrix;
@@ -7,7 +7,7 @@ import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
-import com.jlee.mobile.camviewer.ui.view.AutoFitView;
+import com.jlee.mobile.actioncamera.ui.view.AutoFitView;
 
 import java.util.ArrayList;
 import java.util.Collections;

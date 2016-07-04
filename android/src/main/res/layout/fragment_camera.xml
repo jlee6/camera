@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_red_light">
 
-    <com.jlee.mobile.camviewer.ui.view.AutoFitView
-        android:id="@+id/camera_preview"
+    <com.jlee.mobile.actioncamera.ui.view.AutoFitView
+        android:id="@+id/camera_autofit_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
