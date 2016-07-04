@@ -1,4 +1,4 @@
-package com.jlee.mobile.actioncamera.modules;
+package com.jlee.mobile.actioncamera.module;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.media.MediaRecorder;
 import android.util.Size;
 import android.widget.Toast;
 
-import com.jlee.mobile.actioncamera.presenters.CameraViewPresenter;
+import com.jlee.mobile.actioncamera.presenter.CameraViewPresenter;
 
 import java.io.File;
 import java.io.IOException;

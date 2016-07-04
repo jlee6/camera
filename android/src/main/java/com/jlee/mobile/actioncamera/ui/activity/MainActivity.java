@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jlee.mobile.actioncamera.R;
-import com.jlee.mobile.actioncamera.presenters.FullscreenPresenter;
+import com.jlee.mobile.actioncamera.presenter.FullscreenPresenter;
 import com.jlee.mobile.actioncamera.ui.fragment.Factory;
 
 import butterknife.BindView;

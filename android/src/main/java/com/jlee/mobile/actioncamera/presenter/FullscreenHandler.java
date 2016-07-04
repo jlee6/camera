@@ -1,4 +1,4 @@
-package com.jlee.mobile.actioncamera.presenters;
+package com.jlee.mobile.actioncamera.presenter;
 
 import android.content.Context;
 import android.support.v7.app.ActionBar;

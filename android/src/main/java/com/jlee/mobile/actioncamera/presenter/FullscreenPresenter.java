@@ -1,4 +1,4 @@
-package com.jlee.mobile.actioncamera.presenters;
+package com.jlee.mobile.actioncamera.presenter;
 
 public interface FullscreenPresenter {
     interface FullScreen {

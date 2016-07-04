@@ -20,18 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jlee.mobile.actioncamera.R;
-import com.jlee.mobile.actioncamera.modules.Camera;
-import com.jlee.mobile.actioncamera.modules.Recorder;
-import com.jlee.mobile.actioncamera.presenters.CameraViewPresenter;
-import com.jlee.mobile.actioncamera.presenters.FullscreenHandler;
-import com.jlee.mobile.actioncamera.presenters.FullscreenPresenter;
+import com.jlee.mobile.actioncamera.module.Camera;
+import com.jlee.mobile.actioncamera.module.Recorder;
+import com.jlee.mobile.actioncamera.presenter.CameraViewPresenter;
+import com.jlee.mobile.actioncamera.presenter.FullscreenHandler;
+import com.jlee.mobile.actioncamera.presenter.FullscreenPresenter;
 import com.jlee.mobile.actioncamera.ui.view.AutoFitView;
 import com.jlee.mobile.actioncamera.util.SizeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -54,7 +53,6 @@ public class CameraFragment extends Fragment
 
     private Unbinder unbinder;
 
-    @BindView(R.id.camera_autofit_preview)
     AutoFitView camView;
 
     public CameraFragment() {
@@ -67,7 +65,7 @@ public class CameraFragment extends Fragment
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-//        camView = (AutoFitView) view.findViewById(R.id.camera_autofit_preview);
+        camView = (AutoFitView) view.findViewById(R.id.camera_autofit_preview);
 
         unbinder = ButterKnife.bind(this, view);
 

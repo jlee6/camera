@@ -1,4 +1,4 @@
-package com.jlee.mobile.actioncamera.modules;
+package com.jlee.mobile.actioncamera.module;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,7 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.util.Size;
 
-import com.jlee.mobile.actioncamera.presenters.CameraViewPresenter;
+import com.jlee.mobile.actioncamera.presenter.CameraViewPresenter;
 import com.jlee.mobile.actioncamera.util.SizeHelper;
 
 import java.lang.ref.WeakReference;
@@ -150,6 +150,8 @@ public class Camera implements CameraViewPresenter {
     private CameraDevice.StateCallback cameraCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice cameraDevice) {
+            camera = cameraDevice;
+
             view.configureTransformSize(new Size(250, 250));
 
             view.startPreview(cameraDevice);
@@ -160,12 +162,14 @@ public class Camera implements CameraViewPresenter {
         public void onDisconnected(CameraDevice cameraDevice) {
             lock.release();
             cameraDevice.close();
+            camera = null;
         }
 
         @Override
         public void onError(CameraDevice cameraDevice, int error) {
             lock.release();
             cameraDevice.close();
+            camera = null;
 
             if (context.get() != null) {
                 ((Activity) context.get()).finish();

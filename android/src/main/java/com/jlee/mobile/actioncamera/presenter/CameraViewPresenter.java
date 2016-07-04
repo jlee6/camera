@@ -1,4 +1,4 @@
-package com.jlee.mobile.actioncamera.presenters;
+package com.jlee.mobile.actioncamera.presenter;
 
 import android.hardware.camera2.CameraDevice;
 import android.util.Size;
