@@ -71,18 +71,6 @@ public class MainActivity extends AppCompatActivity {
         delayedHide(100);
     }
 
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     */
-    @OnTouch(R.id.dummy_button)
-    private void btnDummyOnTouch(View view, MotionEvent motionEvent) {
-        if (AUTO_HIDE) {
-            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-        }
-    }
-
     private void hide() {
         // Hide UI first
         ActionBar actionBar = getSupportActionBar();

@@ -9,7 +9,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:background="@drawable/border"
         android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/btn_action_record"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:drawableTop="@drawable/ic_fiber_manual_record"
+        android:textColor="@android:color/white"
+        android:text="@string/action_record"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
 </RelativeLayout>

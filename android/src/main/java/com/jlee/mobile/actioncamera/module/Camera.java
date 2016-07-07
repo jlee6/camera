@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 public class Camera implements CameraViewPresenter {
     private static final String TAG = Camera.class.getSimpleName();
     private static final int DEFAULT_SEMAPHORE_COUNT = 1;
-    private static final int UNSELECTED = -1;
 
     private WeakReference<Context> context;
     private CameraViewPresenter.CameraView view;
@@ -62,7 +61,7 @@ public class Camera implements CameraViewPresenter {
             return characteristics;
         }
 
-        int lensDirection = UNSELECTED;
+        int lensDirection;
         if (characteristics.getKeys().contains(CameraCharacteristics.LENS_FACING)) {
             lensDirection = characteristics.get(CameraCharacteristics.LENS_FACING);
         } else {

@@ -51,9 +51,7 @@ public class CameraFragment extends Fragment
     private CaptureRequest.Builder builder;
     private HandlerThread threadBg;
 
-    private Unbinder unbinder;
-
-    AutoFitView camView;
+    private AutoFitView camView;
 
     public CameraFragment() {
 
@@ -61,13 +59,13 @@ public class CameraFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.wtf("Fragment", "Inflating camera fragment");
-
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        camView = (AutoFitView) view.findViewById(R.id.camera_autofit_preview);
+        if (view.isInEditMode()) {
+            return view;
+        }
 
-        unbinder = ButterKnife.bind(this, view);
+        camView = (AutoFitView) view.findViewById(R.id.camera_autofit_preview);
 
         fsPresenter = new FullscreenHandler(getActivity(), this);
         fsPresenter.show();
@@ -125,13 +123,6 @@ public class CameraFragment extends Fragment
         super.onPause();
 
         camera.closeCamera();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        unbinder.unbind();
     }
 
     @Override

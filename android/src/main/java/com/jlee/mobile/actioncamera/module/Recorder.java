@@ -3,6 +3,7 @@ package com.jlee.mobile.actioncamera.module;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaRecorder;
+import android.text.TextUtils;
 import android.util.Size;
 import android.widget.Toast;
 
@@ -15,7 +16,7 @@ import java.lang.ref.WeakReference;
 /**
  * Android media recorder wrapper
  */
-public class Recorder {
+public class Recorder implements CameraViewPresenter.CameraRecorder {
     private static final int[] ORIENTATIONS = {90, 0, 270, 180};
     private WeakReference<Context> context;
     private CameraViewPresenter.CameraView view;
@@ -23,7 +24,7 @@ public class Recorder {
     private Size size;
     private MediaRecorder recorder;
 
-    public void initialize(Context context, Size size, CameraViewPresenter.CameraView view) {
+    public Recorder(Context context, Size size, CameraViewPresenter.CameraView view) {
         this.context = new WeakReference<>(context);
         this.view = view;
         this.size = size;
@@ -31,7 +32,8 @@ public class Recorder {
         recorder= new MediaRecorder();
     }
 
-    private void setUpMediaRecorder() throws IOException {
+    @Override
+    public void initialize(String output) throws IOException {
         Context ctx = context.get();
         if (ctx == null) {
             return;
@@ -40,7 +42,7 @@ public class Recorder {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setOutputFile(getVideoFile(ctx).getAbsolutePath());
+        recorder.setOutputFile(getVideoFile(ctx, output).getAbsolutePath());
         recorder.setVideoEncodingBitRate(10000000);
         recorder.setVideoFrameRate(30);
         recorder.setVideoSize(size.getWidth(), size.getHeight());
@@ -53,11 +55,16 @@ public class Recorder {
         recorder.prepare();
     }
 
-    private File getVideoFile(Context context) {
-        return new File(context.getExternalFilesDir(null), "video.mp4");
+    private File getVideoFile(Context context, String output) {
+        if (TextUtils.isEmpty(output)) {
+            output = "video.mp4";
+        }
+
+        return new File(context.getExternalFilesDir(null), output);
     }
 
-    private void startRecordingVideo() {
+    @Override
+    public void start() {
         try {
             // Start recording
             recorder.start();
@@ -66,20 +73,22 @@ public class Recorder {
         }
     }
 
-    private void stopRecordingVideo() {
+    @Override
+    public void stop() {
         // Stop recording
         recorder.stop();
         recorder.reset();
 
         Activity activity = (Activity) context.get();
-        if (null != activity) {
-            Toast.makeText(activity, "Video saved: " + getVideoFile(activity),
+        if (activity != null) {
+            Toast.makeText(activity, "Video saved: " + getVideoFile(activity, "video.mp4"),
                     Toast.LENGTH_SHORT).show();
         }
 
         view.startPreview(null);
     }
 
+    @Override
     public void close() {
         if (recorder != null) {
             recorder.release();

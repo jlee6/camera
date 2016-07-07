@@ -13,11 +13,11 @@ public class AutoFitView extends TextureView {
     private int mRatioHeight = 0;
 
     public AutoFitView(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public AutoFitView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
     public AutoFitView(Context context, AttributeSet attrs, int defStyle) {
@@ -36,6 +36,7 @@ public class AutoFitView extends TextureView {
         if (width < 0 || height < 0) {
             throw new IllegalArgumentException("Size cannot be negative.");
         }
+
         mRatioWidth = width;
         mRatioHeight = height;
         requestLayout();
@@ -44,6 +45,11 @@ public class AutoFitView extends TextureView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        if (isInEditMode()) {
+            return;
+        }
+
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
         if (0 == mRatioWidth || 0 == mRatioHeight) {
